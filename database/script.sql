@@ -22,10 +22,10 @@ CREATE TABLE IF NOT EXISTS Players(
     nascimento DATE,
     nivel INT NOT NULL,
     dinheiro DECIMAL(8,2),
-    vidaMaxima INT NOT NULL,
-    vidaAtual INT NOT NULL,
-    energiaMaxima INT NOT NULL,
-    energiaAtual INT NOT NULL,
+    vida_maxima INT NOT NULL,
+    vida_atual INT NOT NULL,
+    energia_maxima INT NOT NULL,
+    energia_atual INT NOT NULL,
     fk_usuario INT NOT NULL,
     FOREIGN KEY(fk_usuario) REFERENCES Usuarios(id_usuario)
 );
@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS Players(
 CREATE TABLE IF NOT EXISTS Historico(
 	id_registro INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     motivo VARCHAR(45) NOT NULL,
-    valorDado INT NOT NULL,
-    nivelSucesso VARCHAR(45),
+    valor_dado INT NOT NULL,
+    nivel_sucesso VARCHAR(45),
     fk_evento INT NOT NULL,
     fk_player INT NOT NULL,
     FOREIGN KEY(fk_evento) REFERENCES Eventos(id_evento),
@@ -123,6 +123,10 @@ INSERT INTO Pericias_Player VALUES
 (null, 1, 1, 11);
 
 SELECT * FROM Pericias_Player WHERE fk_player = 1 AND fk_pericia = 1;
+
+SELECT * FROM Usuarios WHERE nickname = "castrao123" AND senha = "therock<3";
+
+SELECT * FROM Players WHERE fk_usuario = 1;
 
 SELECT * FROM Players;
 
