@@ -1,5 +1,6 @@
 package com.monketabletop.olympus.controller;
 
+import com.monketabletop.olympus.tables.AtributosPlayerTable;
 import com.monketabletop.olympus.service.PlayerService;
 import com.monketabletop.olympus.tables.PlayersTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,17 @@ public class PlayerController {
         playersTable.setNivel(1);
 
         if(playerService.createPlayer(playersTable)){
+            return ResponseEntity.status(201).build();
+        }else{
+            return ResponseEntity.status(204).build();
+        }
+    }
+
+    @PostMapping("/atributo")
+    public ResponseEntity saveAtributo(@RequestBody AtributosPlayerTable atributosPlayerTable){
+        boolean createResult = playerService.createOrUpdateAtributoPlayer(atributosPlayerTable);
+
+        if(createResult){
             return ResponseEntity.status(201).build();
         }else{
             return ResponseEntity.status(204).build();

@@ -3,15 +3,16 @@ package com.monketabletop.olympus.service;
 
 import com.monketabletop.olympus.DiceClass;
 import com.monketabletop.olympus.entity.RollResult;
-import com.monketabletop.olympus.repository.PericiasPlayerRepository;
-import com.monketabletop.olympus.repository.PlayerRepository;
-import com.monketabletop.olympus.repository.UsuarioRepository;
+import com.monketabletop.olympus.repository.*;
+import com.monketabletop.olympus.tables.AtributosPlayerTable;
+import com.monketabletop.olympus.tables.AtributosTable;
 import com.monketabletop.olympus.tables.PericiasPlayerTable;
 import com.monketabletop.olympus.tables.PlayersTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -24,6 +25,12 @@ public class PlayerService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private AtributosPlayerRepository atributosPlayerRepository;
+
+    @Autowired
+    private AtributosRepository atributosRepository;
 
     public PlayersTable getPlayerInfo(int idPlayer){
         if(playerRepository.existsById(idPlayer)){
@@ -68,4 +75,27 @@ public class PlayerService {
         return false;
     }
 
+    public boolean createOrUpdateAtributoPlayer(AtributosPlayerTable atributosPlayerTable){
+        Optional<AtributosPlayerTable> atributosPlayerTable2 = atributosPlayerRepository.findByPlayerAndAtributo(
+                atributosPlayerTable.getFkPlayer().getIdPlayer(),
+                atributosPlayerTable.getFkAtributo().getIdAtributo()
+        );
+
+        if(!atributosRepository.existsById(atributosPlayerTable.getFkAtributo().getIdAtributo())){
+            return false;
+        }
+
+        if(!playerRepository.existsById(atributosPlayerTable.getFkPlayer().getIdPlayer())){
+            return false;
+        }
+
+        if(atributosPlayerTable2.isPresent()){
+            atributosPlayerTable2.get().setPontos(atributosPlayerTable.getPontos());
+            atributosPlayerRepository.save(atributosPlayerTable2.get());
+            return true;
+        }else{
+            atributosPlayerRepository.save(atributosPlayerTable);
+            return true;
+        }
+    }
 }
