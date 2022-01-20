@@ -111,4 +111,15 @@ public class PlayerController {
             return ResponseEntity.status(404).build();
         }
     }
+
+    @GetMapping("/atributo/{idPlayer}")
+    public ResponseEntity getAtributosPlayer(@PathVariable int idPlayer){
+        List<AtributosPlayerTable> listAtributos = playerService.getAtributos(idPlayer);
+
+        if(listAtributos.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(listAtributos);
+    }
 }

@@ -148,4 +148,8 @@ public class PlayerService {
 
         return false;
     }
+
+    public List<AtributosPlayerTable> getAtributos(int idPlayer){
+        return atributosPlayerRepository.findAtributos(idPlayer);
+    }
 }
