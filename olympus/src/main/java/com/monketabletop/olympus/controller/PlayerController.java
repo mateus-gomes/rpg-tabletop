@@ -100,4 +100,15 @@ public class PlayerController {
             return ResponseEntity.status(204).build();
         }
     }
+
+    @DeleteMapping("/inventario/{idItem}")
+    public ResponseEntity deleteItem(@PathVariable int idItem){
+        boolean deleteResult = playerService.deleteItem(idItem);
+
+        if(deleteResult){
+            return ResponseEntity.status(204).build();
+        }else{
+            return ResponseEntity.status(404).build();
+        }
+    }
 }

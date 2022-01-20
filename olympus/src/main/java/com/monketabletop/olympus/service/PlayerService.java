@@ -137,4 +137,15 @@ public class PlayerService {
 
         return false;
     }
+
+    public boolean deleteItem(int idItem){
+        Optional<InventariosTable> inventariosTable = inventariosRepository.findById(idItem);
+
+        if(inventariosTable.isPresent()){
+            inventariosRepository.delete(inventariosTable.get());
+            return true;
+        }
+
+        return false;
+    }
 }
