@@ -1,5 +1,6 @@
 package com.monketabletop.olympus.controller;
 
+import com.monketabletop.olympus.DiceClass;
 import com.monketabletop.olympus.tables.AtributosPlayerTable;
 import com.monketabletop.olympus.service.PlayerService;
 import com.monketabletop.olympus.tables.PlayersTable;
@@ -67,5 +68,12 @@ public class PlayerController {
         }else{
             return ResponseEntity.status(204).build();
         }
+    }
+
+    @GetMapping("/roll/{diceSides}")
+    public ResponseEntity rollDice(@PathVariable int diceSides){
+        DiceClass diceClass = new DiceClass();
+
+        return ResponseEntity.status(200).body(diceClass.rollDice(diceSides));
     }
 }
