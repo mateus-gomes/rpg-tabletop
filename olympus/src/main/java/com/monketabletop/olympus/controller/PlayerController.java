@@ -3,6 +3,7 @@ package com.monketabletop.olympus.controller;
 import com.monketabletop.olympus.DiceClass;
 import com.monketabletop.olympus.tables.AtributosPlayerTable;
 import com.monketabletop.olympus.service.PlayerService;
+import com.monketabletop.olympus.tables.InventariosTable;
 import com.monketabletop.olympus.tables.PericiasPlayerTable;
 import com.monketabletop.olympus.tables.PlayersTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,5 +88,16 @@ public class PlayerController {
         DiceClass diceClass = new DiceClass();
 
         return ResponseEntity.status(200).body(diceClass.rollDice(diceSides));
+    }
+
+    @PostMapping("/inventario")
+    public ResponseEntity addItem(@RequestBody InventariosTable inventariosTable){
+        boolean createResult = playerService.addItem(inventariosTable);
+
+        if(createResult){
+            return ResponseEntity.status(201).build();
+        }else{
+            return ResponseEntity.status(204).build();
+        }
     }
 }

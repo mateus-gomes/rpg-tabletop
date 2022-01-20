@@ -5,6 +5,7 @@ import com.monketabletop.olympus.DiceClass;
 import com.monketabletop.olympus.entity.RollResult;
 import com.monketabletop.olympus.repository.*;
 import com.monketabletop.olympus.tables.AtributosPlayerTable;
+import com.monketabletop.olympus.tables.InventariosTable;
 import com.monketabletop.olympus.tables.PericiasPlayerTable;
 import com.monketabletop.olympus.tables.PlayersTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,9 @@ public class PlayerService {
 
     @Autowired
     private AtributosRepository atributosRepository;
+
+    @Autowired
+    private InventariosRepository inventariosRepository;
 
     public PlayersTable getPlayerInfo(int idPlayer){
         if(playerRepository.existsById(idPlayer)){
@@ -123,5 +127,14 @@ public class PlayerService {
             periciasPlayerRepository.save(periciasPlayerTable);
             return true;
         }
+    }
+
+    public boolean addItem(InventariosTable inventariosTable){
+        if(playerRepository.existsById(inventariosTable.getFkPlayer().getIdPlayer())){
+            inventariosRepository.save(inventariosTable);
+            return true;
+        }
+
+        return false;
     }
 }
