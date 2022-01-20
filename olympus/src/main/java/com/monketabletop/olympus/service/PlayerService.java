@@ -5,7 +5,6 @@ import com.monketabletop.olympus.DiceClass;
 import com.monketabletop.olympus.entity.RollResult;
 import com.monketabletop.olympus.repository.*;
 import com.monketabletop.olympus.tables.AtributosPlayerTable;
-import com.monketabletop.olympus.tables.AtributosTable;
 import com.monketabletop.olympus.tables.PericiasPlayerTable;
 import com.monketabletop.olympus.tables.PlayersTable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,9 @@ public class PlayerService {
 
     @Autowired
     private PericiasPlayerRepository periciasPlayerRepository;
+
+    @Autowired
+    private PericiasRepository periciasRepository;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -46,10 +48,10 @@ public class PlayerService {
 
     public RollResult rollATest(int fkPlayer, int fkPericia){
         DiceClass diceClass = new DiceClass();
-        PericiasPlayerTable periciasPlayerTable = periciasPlayerRepository.findPericia(fkPlayer, fkPericia);
+        Optional<PericiasPlayerTable> periciasPlayerTable = periciasPlayerRepository.findByPlayerAndPericia(fkPlayer, fkPericia);
 
         int diceResult = diceClass.rollDice(20);
-        int periciaValue = periciasPlayerTable.getPontos();
+        int periciaValue = periciasPlayerTable.get().getPontos();
         int chanceTesteBom = (int)Math.ceil((Double.parseDouble(String.valueOf(periciaValue)) - 1)/2);
         int chanceTesteExtremo = (int)Math.ceil((Double.parseDouble(String.valueOf(periciaValue)) - 4)/5);
 
@@ -95,6 +97,30 @@ public class PlayerService {
             return true;
         }else{
             atributosPlayerRepository.save(atributosPlayerTable);
+            return true;
+        }
+    }
+
+    public boolean createOrUpdatePericiaPlayer(PericiasPlayerTable periciasPlayerTable){
+        Optional<PericiasPlayerTable> periciasPlayerTable2 = periciasPlayerRepository.findByPlayerAndPericia(
+                periciasPlayerTable.getFkPlayer().getIdPlayer(),
+                periciasPlayerTable.getFkPericia().getIdPericia()
+        );
+
+        if(!periciasRepository.existsById(periciasPlayerTable.getFkPericia().getIdPericia())){
+            return false;
+        }
+
+        if(!playerRepository.existsById(periciasPlayerTable.getFkPlayer().getIdPlayer())){
+            return false;
+        }
+
+        if(periciasPlayerTable2.isPresent()){
+            periciasPlayerTable2.get().setPontos(periciasPlayerTable.getPontos());
+            periciasPlayerRepository.save(periciasPlayerTable2.get());
+            return true;
+        }else{
+            periciasPlayerRepository.save(periciasPlayerTable);
             return true;
         }
     }

@@ -3,6 +3,7 @@ package com.monketabletop.olympus.controller;
 import com.monketabletop.olympus.DiceClass;
 import com.monketabletop.olympus.tables.AtributosPlayerTable;
 import com.monketabletop.olympus.service.PlayerService;
+import com.monketabletop.olympus.tables.PericiasPlayerTable;
 import com.monketabletop.olympus.tables.PlayersTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +63,17 @@ public class PlayerController {
     @PostMapping("/atributo")
     public ResponseEntity saveAtributo(@RequestBody AtributosPlayerTable atributosPlayerTable){
         boolean createResult = playerService.createOrUpdateAtributoPlayer(atributosPlayerTable);
+
+        if(createResult){
+            return ResponseEntity.status(201).build();
+        }else{
+            return ResponseEntity.status(204).build();
+        }
+    }
+
+    @PostMapping("/pericia")
+    public ResponseEntity savePericia(@RequestBody PericiasPlayerTable periciasPlayerTable){
+        boolean createResult = playerService.createOrUpdatePericiaPlayer(periciasPlayerTable);
 
         if(createResult){
             return ResponseEntity.status(201).build();
