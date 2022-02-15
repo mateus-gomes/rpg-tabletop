@@ -130,4 +130,8 @@ SELECT * FROM Players WHERE fk_usuario = 1;
 
 SELECT * FROM Players;
 
+SELECT * FROM Atributos_Player;
+
+INSERT INTO Atributos VALUES
+(null, "Inteligencia");
 DROP DATABASE rpg;

@@ -122,4 +122,15 @@ public class PlayerController {
 
         return ResponseEntity.status(200).body(listAtributos);
     }
+
+    @GetMapping("/pericias/{idPlayer}")
+    public ResponseEntity getPericiasPlayer(@PathVariable int idPlayer){
+        List<PericiasPlayerTable> listPericias = playerService.getPericias(idPlayer);
+
+        if(listPericias.isEmpty()){
+            return ResponseEntity.status(204).build();
+        }
+
+        return ResponseEntity.status(200).body(listPericias);
+    }
 }

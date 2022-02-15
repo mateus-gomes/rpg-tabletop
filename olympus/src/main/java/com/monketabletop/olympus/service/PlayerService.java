@@ -152,4 +152,8 @@ public class PlayerService {
     public List<AtributosPlayerTable> getAtributos(int idPlayer){
         return atributosPlayerRepository.findAtributos(idPlayer);
     }
+
+    public List<PericiasPlayerTable> getPericias(int idPlayer){
+        return periciasPlayerRepository.findPericias(idPlayer);
+    }
 }
