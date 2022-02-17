@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -53,6 +54,10 @@ public class PlayerService {
     public RollResult rollATest(int fkPlayer, int fkPericia){
         DiceClass diceClass = new DiceClass();
         Optional<PericiasPlayerTable> periciasPlayerTable = periciasPlayerRepository.findByPlayerAndPericia(fkPlayer, fkPericia);
+
+        if(!periciasPlayerTable.isPresent()){
+            throw new NoSuchElementException("Player or Pericia not found");
+        }
 
         int diceResult = diceClass.rollDice(20);
         int periciaValue = periciasPlayerTable.get().getPontos();

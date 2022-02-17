@@ -1,6 +1,7 @@
 package com.monketabletop.olympus.controller;
 
 import com.monketabletop.olympus.DiceClass;
+import com.monketabletop.olympus.entity.RollResult;
 import com.monketabletop.olympus.tables.AtributosPlayerTable;
 import com.monketabletop.olympus.service.PlayerService;
 import com.monketabletop.olympus.tables.InventariosTable;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/players")
@@ -43,7 +45,12 @@ public class PlayerController {
 
     @GetMapping("/{idPlayer}/pericias/{idPericia}")
     public ResponseEntity rollAttribute(@PathVariable int idPlayer, @PathVariable int idPericia){
-        return ResponseEntity.status(200).body(playerService.rollATest(idPlayer, idPericia));
+        try{
+            RollResult rollResult = playerService.rollATest(idPlayer, idPericia);
+            return ResponseEntity.status(200).body(rollResult);
+        }catch (NoSuchElementException e){
+            return ResponseEntity.status(204).build();
+        }
     }
 
     @PostMapping
